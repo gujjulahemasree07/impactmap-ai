@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f8f4">
+  <title>Sign in — ImpactMap AI</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --paper: #f7f8f4;
+      --ink: #19231f;
+      --muted: #69736b;
+      --green: #226b4b;
+      --line: #e2e7df;
+      --white: #fff;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+      --display: 'Manrope', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font: 14px var(--sans);
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(1160px, 100% - 48px);
+      margin: auto;
+    }
+
+    .topbar {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      text-decoration: none;
+      font: 800 18px var(--display);
+      letter-spacing: -.5px;
+    }
+
+    .brand span {
+      color: var(--green);
+    }
+
+    .back {
+      font-size: 12px;
+      text-decoration: none;
+      color: var(--muted);
+    }
+
+    .back:hover {
+      color: var(--green);
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 42px 0;
+    }
+
+    .auth-layout {
+      width: min(1000px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .intro .eyebrow {
+      font: 10px var(--mono);
+      letter-spacing: 1px;
+      color: var(--green);
+      text-transform: uppercase;
+    }
+
+    .intro h1 {
+      font: 700 clamp(34px, 4vw, 48px)/1.1 var(--display);
+      letter-spacing: -2.2px;
+      margin: 16px 0;
+    }
+
+    .intro h1 span {
+      color: var(--green);
+    }
+
+    .intro p {
+      max-width: 390px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .map-art {
+      height: 208px;
+      max-width: 420px;
+      margin-top: 25px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #dfead9;
+      border: 1px solid #d1dfce;
+      box-shadow: 0 14px 35px #254c3010;
+    }
+
+    .map-art::before,
+    .map-art::after {
+      content: '';
+      position: absolute;
+      inset: -30%;
+      background: repeating-linear-gradient(
+        32deg,
+        transparent 0 34px,
+        #ffffff9c 35px 38px,
+        transparent 39px 69px
+      );
+      transform: rotate(-12deg);
+    }
+
+    .map-art::after {
+      background: repeating-linear-gradient(
+        118deg,
+        transparent 0 52px,
+        #ffffff70 53px 56px,
+        transparent 57px 91px
+      );
+      transform: rotate(9deg);
+    }
+
+    .map-art svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .map-label {
+      position: absolute;
+      z-index: 2;
+      left: 14px;
+      top: 13px;
+      padding: 7px 9px;
+      background: #ffffffdf;
+      border: 1px solid #fff;
+      border-radius: 7px;
+      color: #42614b;
+      font: 9px var(--mono);
+      letter-spacing: .5px;
+    }
+
+    .map-stat {
+      position: absolute;
+      z-index: 2;
+      right: 12px;
+      bottom: 12px;
+      padding: 9px 11px;
+      background: #fff;
+      border-radius: 9px;
+      box-shadow: 0 5px 18px #213a2517;
+      color: #68756b;
+      font-size: 9px;
+    }
+
+    .map-stat b {
+      display: block;
+      color: var(--green);
+      font: 700 17px var(--display);
+    }
+
+    .card {
+      padding: 29px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      box-shadow: 0 18px 54px #23392d12;
+    }
+
+    .card-kicker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font: 9px var(--mono);
+      letter-spacing: .8px;
+      margin-bottom: 16px;
+    }
+
+    .card-kicker i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4b996b;
+      box-shadow: 0 0 0 4px #e9f3e9;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      padding: 4px;
+      background: #f1f4ef;
+      border-radius: 8px;
+      margin-bottom: 23px;
+    }
+
+    .tab {
+      height: 36px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: white;
+      color: var(--green);
+      box-shadow: 0 1px 4px #20352812;
+    }
+
+    .form-title {
+      font: 700 22px var(--display);
+      letter-spacing: -.6px;
+      margin: 0 0 5px;
+    }
+
+    .form-subtitle {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .field {
+      margin: 0 0 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #59665d;
+      font: 10px var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .field input {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 0 11px;
+      background: #fbfcfa;
+      color: var(--ink);
+      font: 13px var(--sans);
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #77a783;
+      box-shadow: 0 0 0 3px #226b4b12;
+    }
+
+    .password-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .password-row a {
+      color: var(--green);
+      font-size: 10px;
+      text-decoration: none;
+    }
+
+    .primary {
+      width: 100%;
+      height: 43px;
+      border: 0;
+      border-radius: 7px;
+      background: var(--green);
+      color: white;
+      font-weight: 600;
+      font-size: 12px;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .primary:hover {
+      background: #174f37;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: #899289;
+      font: 9px var(--mono);
+      margin: 17px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      height: 1px;
+      background: var(--line);
+      flex: 1;
+    }
+
+    .google {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: white;
+      color: #344139;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .google:hover {
+      background: #fafbf9;
+    }
+
+    .google svg {
+      width: 17px;
+    }
+
+    .legal {
+      margin: 15px 0 0;
+      text-align: center;
+      color: #899289;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    .message {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 11px;
+      border-radius: 7px;
+      background: #edf3e9;
+      color: #335b41;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 17px 0;
+      color: #889289;
+      font: 9px var(--mono);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: calc(100% - 32px);
+      }
+
+      .auth-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        max-width: 450px;
+      }
+
+      .intro {
+        text-align: center;
+      }
+
+      .intro p {
+        margin: auto;
+      }
+
+      .map-art {
+        height: 160px;
+        margin: 20px auto 0;
+      }
+
+      .card {
+        padding: 22px;
+      }
+
+      .intro h1 {
+        font-size: 36px;
+      }
+
+      .topbar {
+        height: 64px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .map-art {
+        height: 140px;
+      }
+
+      .topbar .back {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="index.html?intro=seen">impact<span>map</span> AI</a>
+      <a class="back" href="index.html?intro=seen">← Back to project ideas</a>
+    </header>
+
+    <main>
+      <div class="auth-layout">
+        <section class="intro">
+          <div class="eyebrow">AI · GIS · SOCIAL GOOD</div>
+          <h1>Good ideas grow<br><span>when shared.</span></h1>
+          <p>Sign in to keep your project ideas together and continue planning your next step.</p>
+
+          <div class="map-art" aria-label="Illustrated community impact map">
+            <span class="map-label">COMMUNITY IMPACT MAP · LIVE DEMO</span>
+            <svg viewBox="0 0 420 208" fill="none" aria-hidden="true">
+              <path d="M-15 158C45 113 74 166 132 126S215 99 260 124 336 147 440 61"
+                    stroke="#74a88a" stroke-width="13" stroke-linecap="round"/>
+              <path d="M-15 158C45 113 74 166 132 126S215 99 260 124 336 147 440 61"
+                    stroke="#f7fff4" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 8"/>
+              <path d="M75 0 106 208M217 0l-26 208M350 0l-38 208"
+                    stroke="#fff" stroke-width="3" opacity=".75"/>
+              <circle cx="132" cy="126" r="15" fill="#fff"/>
+              <circle cx="132" cy="126" r="9" fill="#236b4b"/>
+              <circle cx="260" cy="124" r="15" fill="#fff"/>
+              <circle cx="260" cy="124" r="9" fill="#236b4b"/>
+              <circle cx="340" cy="91" r="7" fill="#e7a64b" stroke="#fff" stroke-width="4"/>
+              <circle cx="84" cy="91" r="7" fill="#e7a64b" stroke="#fff" stroke-width="4"/>
+            </svg>
+            <div class="map-stat"><b>06</b>community project paths</div>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Account access">
+          <div class="card-kicker"><i></i> YOUR IDEA LAB ACCOUNT</div>
+
+          <div class="tabs">
+            <button class="tab active" id="loginTab" type="button">Sign in</button>
+            <button class="tab" id="registerTab" type="button">Create account</button>
+          </div>
+
+          <h2 class="form-title" id="formTitle">Welcome back</h2>
+          <p class="form-subtitle" id="formSubtitle">Sign in to continue to ImpactMap AI.</p>
+
+          <form id="authForm">
+            <div class="field" id="nameField" hidden>
+              <label for="name">Your name</label>
+              <input id="name" name="name" autocomplete="name" placeholder="Enter your name">
+            </div>
+
+            <div class="field">
+              <label for="email">Email address</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+            </div>
+
+            <div class="field">
+              <div class="password-row">
+                <label for="password">Password</label>
+                <a href="#" id="forgotLink">Forgot password?</a>
+              </div>
+              <input id="password" name="password" type="password" autocomplete="current-password" minlength="6" required placeholder="At least 6 characters">
+            </div>
+
+            <button class="primary" id="submitButton" type="submit">Sign in</button>
+          </form>
+
+          <div class="divider">OR CONTINUE WITH</div>
+
+          <button class="google" id="googleButton" type="button">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.6c3.9-3.6 6.1-8.8 6.1-15Z"/>
+              <path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.8l-6.6-5.1c-1.8 1.2-4 1.9-6.9 1.9-5.3 0-9.8-3.6-11.4-8.4H5.8v5.3A20 20 0 0 0 24 44Z"/>
+              <path fill="#4A90E2" d="M12.6 27.6a12 12 0 0 1 0-7.2v-5.3H5.8a20 20 0 0 0 0 17.8l6.8-5.3Z"/>
+              <path fill="#EA4335" d="M24 12c3 0 5.7 1 7.8 3.1l5.8-5.8A19.4 19.4 0 0 0 24 4 20 20 0 0 0 5.8 15.1l6.8 5.3C14.2 15.6 18.7 12 24 12Z"/>
+            </svg>
+            Continue with Google
+          </button>
+
+          <div class="message" id="message" role="status"></div>
+          <p class="legal">
+            By continuing, you agree to use this demo responsibly.<br>
+            Authentication is not connected to a server yet.
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span>IMPACTMAP AI · IDEA LAB</span>
+      <span>MAKE DATA MATTER WHERE IT MATTERS.</span>
+    </footer>
+  </div>
+
+  <script>
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const nameField = document.getElementById('nameField');
+    const title = document.getElementById('formTitle');
+    const subtitle = document.getElementById('formSubtitle');
+    const submitButton = document.getElementById('submitButton');
+    const password = document.getElementById('password');
+    const message = document.getElementById('message');
+
+    let mode = 'login';
+
+    function setMode(next) {
+      mode = next;
+      const registering = mode === 'register';
+
+      loginTab.classList.toggle('active', !registering);
+      registerTab.classList.toggle('active', registering);
+      nameField.hidden = !registering;
+      document.getElementById('name').required = registering;
+
+      title.textContent = registering ? 'Create your account' : 'Welcome back';
+      subtitle.textContent = registering
+        ? 'Save your ideas and start planning.'
+        : 'Sign in to continue to ImpactMap AI.';
+      submitButton.textContent = registering ? 'Create account' : 'Sign in';
+      password.autocomplete = registering ? 'new-password' : 'current-password';
+      document.getElementById('forgotLink').hidden = registering;
+      message.classList.remove('show');
+    }
+
+    loginTab.addEventListener('click', () => setMode('login'));
+    registerTab.addEventListener('click', () => setMode('register'));
+
+    document.getElementById('authForm').addEventListener('submit', event => {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const name = document.getElementById('name').value.trim();
+
+      localStorage.setItem(
+        'impactmapDemoUser',
+        JSON.stringify({
+          email,
+          name: mode === 'register' ? name : email.split('@')[0]
+        })
+      );
+
+      message.textContent = mode === 'register'
+        ? 'Demo account created. Your project workspace is ready.'
+        : 'Demo sign-in successful. Your project workspace is ready.';
+
+      message.classList.add('show');
+      setTimeout(() => {
+        location.href = 'index.html?intro=seen';
+      }, 900);
+    });
+
+    document.getElementById('googleButton').addEventListener('click', () => {
+      message.textContent =
+        'Google sign-in is shown as a demo. To enable real Google login, connect OAuth credentials and a secure authentication backend.';
+      message.classList.add('show');
+    });
+
+    document.getElementById('forgotLink').addEventListener('click', event => {
+      event.preventDefault();
+      message.textContent =
+        'Password reset needs an email service and a connected account backend.';
+      message.classList.add('show');
+    });
+  </script>
+</body>
+</html>
